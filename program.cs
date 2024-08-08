@@ -21,51 +21,50 @@ try
 
     switch(command){
         
-        case "park": //add vehicle to parkinglot
+        case "park":
+        { // command for adding vehicle to parkinglot
         string[] arg = {commands[1],commands[2],commands[3]}; // collect arg for create vehicle
         Vehicle vehicle = CekIn(arg); //create vehicle =
         if(Parking.Count < Lot){ // add vehicle to parking lot is slot in it 
             if(DeletedKey.Count>0){ // if there is 
-                key = DeletedKey.Last(); 
-                DeletedKey.Remove(key);
+                int useDeletedKey = DeletedKey.First(); 
+                Parking[useDeletedKey] = vehicle;
+                Console.WriteLine($"Allocated slot number: {useDeletedKey}");
+                DeletedKey.Remove(useDeletedKey);
             }else{
-                key = Parking.Last().Key+1;
+                Parking[key] = vehicle;
+                Console.WriteLine($"Allocated slot number: {key}");
+                key++;
             }
-            Parking[key] = vehicle;
-            Console.WriteLine($"Allocated slot number: {key}");
-            key++;
         } else{
             Console.WriteLine("Sorry, parking lot is full");
         }
         break;
+        }
 
         case "leave": // remove vehicle from parkinglot
         int indx = int.Parse(commands[1]);
-        DeletedKey.Add(indx);
-        Parking.Remove(indx);
-        if (indx <= Lot){
+        if (!DeletedKey.Contains(indx) && indx <= Lot){
+            DeletedKey.Add(indx);
+            Parking.Remove(indx);    
             Console.WriteLine($"Slot number {indx} is free");
-        } else{
-            Console.WriteLine($"there is no Slot {indx}");
+        }else{
+            Console.WriteLine($"{indx} is empty");
         }
         break;
 
         case "status": // show vehicle in parkinglot, 
         
         Console.WriteLine("Slot \t No. \t \t Type \t Colour");
-
-        foreach (var i in Parking){
-            Console.WriteLine(
-            $"{i.Key} \t {i.Value.No} \t {i.Value.Tipe} \t {i.Value.Colour}");
+        List<int> sortKey = Parking.Keys.ToList();
+        sortKey.Sort();
+        foreach(var k in sortKey)
+        {
+             Console.WriteLine(
+                    $"{k} \t {Parking[k].No} \t {Parking[k].Tipe} \t {Parking[k].Colour}"
+                    );
         }
         break;
-
-        case "deletedkey": // (util) show deleted key
-        foreach(var i in DeletedKey){
-            Console.WriteLine(i);
-        };
-        break;
-
     }
         if (command == "exit"){ //stop program 
         break;
@@ -84,51 +83,6 @@ catch (System.FormatException)
 }
 }
 }
-
-
-        
-        // while(true){
-            
-        //     Console.Write("$");
-        //     string fullCommand = Console.ReadLine();
-        //     string[] commands = fullCommand.Split(' ');
-        //     string command = commands[0];
-        //     if (command =="exit"){
-        //         break;
-        //     }
-            
-        //     switch(command){
-        //         case "park":
-        //         string[] v = {commands[1], commands[2], commands[3]};
-        //         if (key < jumlah){
-        //             if (deletedKeys.Count > 0){
-        //                 key = deletedKeys.First();
-        //                 deletedKeys.RemoveAt(0);
-        //             } else{
-        //                 key++;
-        //             }
-        //             area[key] = CekIn(v);
-        //             Console.WriteLine($"Allocated slot number: {key}");
-        //         } else{
-        //             Console.WriteLine("Sorry, parking lot is full");
-        //         }
-        
-        //         break;
-        //         case "leave":
-        //             int indx = int.Parse(commands[1]);
-        //             deletedKeys.Add(indx);
-        //             key = indx;
-        //             area.Remove(indx);
-        //             Console.WriteLine($"Slot number {indx} is free");
-        //         break;
-        //         case "status":
-        //             Console.WriteLine("Slot \t No. \t Type \t Colour");
-        //             foreach (var vehicle in area)
-        //             {
-        //                 Console.WriteLine(
-        //                     $"{vehicle.Key} \t {vehicle.Value.No} \t {vehicle.Value.Tipe} \t {vehicle.Value.Colour}");
-        //             }
-        //         break;
         //         case "type_of_vehicles":
         //             string type = commands[1];
         //             VehicleType vehicleT = 
