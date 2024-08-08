@@ -53,16 +53,13 @@ try
         }
         break;
 
-        case "status": // show vehicle in parkinglot, 
-        
+        case "status": 
         Console.WriteLine("Slot \t No. \t \t Type \t Colour");
         List<int> sortKey = Parking.Keys.ToList();
         sortKey.Sort();
         foreach(var k in sortKey)
         {
-             Console.WriteLine(
-                    $"{k} \t {Parking[k].No} \t {Parking[k].Tipe} \t {Parking[k].Colour}"
-                    );
+             Console.WriteLine($"{k} \t {Parking[k].No} \t {Parking[k].Tipe} \t {Parking[k].Colour}");
         }
         break;
     }
